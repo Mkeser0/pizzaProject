@@ -1,16 +1,57 @@
 import { Label, FormGroup, Input, Col } from "reactstrap";
 import { Button, ButtonGroup } from "react-bootstrap";
 import Counter from "./Counter";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+
+const initialForm = {
+  size: "",
+  dough: "",
+  note: "",
+};
+
 export default function OrderForm() {
+  const [ekMalzeme, setEkMalzeme] = useState([]);
+  const [form, setForm] = useState(initialForm);
+  const [pizzaQuantity, setPizzaQuantity] = useState(0);
   const [isValid, setIsValid] = useState(false);
-  const [err, setErr] = useState("");
 
   const history = useHistory();
 
+  function checkIsValid(x, y, z) {
+    return (
+      x.size && x.dough && y.length >= 3 && y.length <= 10 && z > 0 && z <= 10
+    );
+  }
+
+  useEffect(() => {
+    setIsValid(checkIsValid(form, ekMalzeme, pizzaQuantity));
+  }, [form, ekMalzeme, pizzaQuantity]);
+
   function handleChange(e) {
-    console.log(e.target.value);
+    const { value, checked } = e.target;
+    if (checked) {
+      setEkMalzeme((prev) => [...prev, value]);
+    } else {
+      setEkMalzeme((prev) => prev.filter((item) => item !== value));
+    }
+  }
+
+  function handleFormChange(e) {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  }
+
+  function handleQuantityChange(quantity) {
+    setPizzaQuantity(quantity);
+  }
+
+  function handleClick() {
+    if (isValid) {
+      history.push("/order-confirmation");
+    } else {
+      alert("Lütfen tüm alanları doğru şekilde doldurun.");
+    }
   }
 
   return (
@@ -46,19 +87,34 @@ export default function OrderForm() {
               <div>
                 <h6>Boyut Seç</h6>
                 <FormGroup check>
-                  <Input id="buyuk" name="radio1" type="radio" />{" "}
+                  <Input
+                    onChange={handleFormChange}
+                    id="buyuk"
+                    name="size"
+                    type="radio"
+                  />
                   <Label htmlFor="buyuk" check>
                     Büyük
                   </Label>
                 </FormGroup>
                 <FormGroup check>
-                  <Input id="orta" name="radio1" type="radio" />{" "}
+                  <Input
+                    onChange={handleFormChange}
+                    id="orta"
+                    name="size"
+                    type="radio"
+                  />
                   <Label htmlFor="orta" check>
                     Orta
                   </Label>
                 </FormGroup>
                 <FormGroup check>
-                  <Input id="kucuk" name="radio1" type="radio" />{" "}
+                  <Input
+                    onChange={handleFormChange}
+                    id="kucuk"
+                    name="size"
+                    type="radio"
+                  />
                   <Label htmlFor="kucuk" check>
                     Küçük
                   </Label>
@@ -71,7 +127,12 @@ export default function OrderForm() {
                     Select
                   </Label>
                   <Col sm={10}>
-                    <Input id="exampleSelect" name="select" type="select">
+                    <Input
+                      onChange={handleFormChange}
+                      id="exampleSelect"
+                      name="dough"
+                      type="select"
+                    >
                       <option>Hamur Kalınlığı</option>
                       <option>2</option>
                       <option>3</option>
@@ -87,31 +148,61 @@ export default function OrderForm() {
             <div className="options">
               <div className="first-col">
                 <FormGroup check>
-                  <Input id="pepp" type="checkbox" />
+                  <Input
+                    value="pepp"
+                    name="pepp"
+                    id="pepp"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="pepp" check>
                     Peppperoni
                   </Label>
                 </FormGroup>
                 <FormGroup check>
-                  <Input id="ızg" type="checkbox" />
+                  <Input
+                    value="ızg"
+                    name="ızg"
+                    id="ızg"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="ızg" check>
                     Tavuk Izgara
                   </Label>
                 </FormGroup>
                 <FormGroup check>
-                  <Input id="misir" type="checkbox" />
+                  <Input
+                    value="misir"
+                    name="misir"
+                    id="misir"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="misir" check>
                     Mısır
                   </Label>
                 </FormGroup>
                 <FormGroup check>
-                  <Input id="sarim" type="checkbox" />
+                  <Input
+                    value="sarim"
+                    name="sarim"
+                    id="sarim"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="sarim" check>
                     Sarımsak
                   </Label>
                 </FormGroup>
                 <FormGroup check>
-                  <Input id="ananas" type="checkbox" />
+                  <Input
+                    value="ananas"
+                    name="ananas"
+                    id="ananas"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="ananas" check>
                     Ananas
                   </Label>
@@ -119,31 +210,61 @@ export default function OrderForm() {
               </div>
               <div className="second-col">
                 <FormGroup check>
-                  <Input id="sosis" type="checkbox" />
+                  <Input
+                    value="sosis"
+                    name="sosis"
+                    id="sosis"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="sosis" check>
                     Sosis
                   </Label>
                 </FormGroup>
                 <FormGroup check>
-                  <Input id="sogan" type="checkbox" />
+                  <Input
+                    value="sogan"
+                    name="sogan"
+                    id="sogan"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="sogan" check>
                     Soğan
                   </Label>
                 </FormGroup>
                 <FormGroup check>
-                  <Input id="sucuk" type="checkbox" />
+                  <Input
+                    value="sucuk"
+                    name="sucuk"
+                    id="sucuk"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="sucuk" check>
                     Sucuk
                   </Label>
                 </FormGroup>
                 <FormGroup check>
-                  <Input id="biber" type="checkbox" />
+                  <Input
+                    value="biber"
+                    name="biber"
+                    id="biber"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="biber" check>
                     Biber
                   </Label>
                 </FormGroup>
                 <FormGroup check>
-                  <Input id="kabak" type="checkbox" />
+                  <Input
+                    value="kabak"
+                    name="kabak"
+                    id="kabak"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="kabak" check>
                     Kabak
                   </Label>
@@ -151,25 +272,49 @@ export default function OrderForm() {
               </div>
               <div className="third-col">
                 <FormGroup check>
-                  <Input id="jambon" type="checkbox" />
+                  <Input
+                    value="jambon"
+                    name="jambon"
+                    id="jambon"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="jambon" check>
                     Kanada Jambonu
                   </Label>
                 </FormGroup>
                 <FormGroup check>
-                  <Input id="dom" type="checkbox" />
+                  <Input
+                    value="dom"
+                    name="dom"
+                    id="dom"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="dom" check>
                     Domates
                   </Label>
                 </FormGroup>
                 <FormGroup check>
-                  <Input id="jal" type="checkbox" />
+                  <Input
+                    value="jal"
+                    name="jal"
+                    id="jal"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="jal" check>
                     Jalepeno
                   </Label>
                 </FormGroup>
                 <FormGroup check>
-                  <Input id="suc" type="checkbox" />
+                  <Input
+                    value="suc"
+                    name="suc"
+                    id="suc"
+                    type="checkbox"
+                    onChange={handleChange}
+                  />
                   <Label htmlFor="suc" check>
                     Sucuk
                   </Label>
@@ -177,10 +322,14 @@ export default function OrderForm() {
               </div>
             </div>
             <h6>Sipariş Notu</h6>
-            <textarea placeholder="Siparişinize eklemek istediğiniz bir not var mı?"></textarea>
+            <textarea
+              name="note"
+              onChange={handleFormChange}
+              placeholder="Siparişinize eklemek istediğiniz bir not var mı?"
+            ></textarea>
             <hr></hr>
             <div className="order">
-              <Counter />
+              <Counter handleQuantityChange={handleQuantityChange} />
               <div className="footer">
                 <div>
                   <h6>Sipariş Toplamı</h6>
@@ -195,7 +344,14 @@ export default function OrderForm() {
                     </div>
                   </div>
                   <ButtonGroup>
-                    <Button variant="warning">SİPARİŞ VER</Button>
+                    <Button
+                      disabled={!isValid}
+                      variant="warning"
+                      onClick={handleClick}
+                      type="submit"
+                    >
+                      SİPARİŞ VER
+                    </Button>
                   </ButtonGroup>
                 </div>
               </div>
