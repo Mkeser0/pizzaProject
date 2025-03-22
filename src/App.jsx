@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
-
-import Anasayfa from "./components/Anasayfa";
-import SiparisOnayi from "./components/SiparisOnayi";
-import SiparisFormu from "./components/Siparisformu";
+import "bootstrap/dist/css/bootstrap.min.css";
+import HomePage from "./components/HomePage";
+import OrderConfirmation from "./components/OrderConfirmation";
+import OrderForm from "./components/OrderForm";
 
 function App() {
   return (
@@ -12,13 +12,13 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Anasayfa />
+            <HomePage />
           </Route>
-          <Route path="/siparisformu">
-            <SiparisFormu />
+          <Route path="/siparis-formu">
+            <OrderForm />
           </Route>
-          <Route path="/siparisonayi">
-            <SiparisOnayi />
+          <Route path="/order-confirmation">
+            <OrderConfirmation />
           </Route>
         </Switch>
       </Router>

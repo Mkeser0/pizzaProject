@@ -1,9 +1,9 @@
 import { useHistory } from "react-router-dom";
 import { Button } from "reactstrap";
-export default function Anasayfa() {
+export default function HomePage() {
   const history = useHistory();
   const handleClick = () => {
-    history.push("/siparisformu");
+    history.push("/siparis-formu");
   };
   return (
     <div>
