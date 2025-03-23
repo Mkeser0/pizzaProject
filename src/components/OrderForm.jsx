@@ -1,4 +1,4 @@
-import { Label, FormGroup, Input, Col } from "reactstrap";
+import { Label, FormGroup, Input } from "reactstrap";
 import { Button, ButtonGroup } from "react-bootstrap";
 import Counter from "./Counter";
 import { useState, useEffect } from "react";
@@ -58,7 +58,7 @@ export default function OrderForm() {
     <>
       <div>
         <header className="header-card">
-          <h2 className="head">Teknolojik Yemekler</h2>
+          <img src="../images/iteration-1-images/logo.svg" />
           <p className="header-text">
             Anasayfa<b> Sipariş Oluştur</b>
           </p>
@@ -122,25 +122,13 @@ export default function OrderForm() {
               </div>
               <div>
                 <h6>Hamur Seç</h6>
-                <FormGroup row>
-                  <Label for="exampleSelect" sm={2}>
-                    Select
-                  </Label>
-                  <Col sm={10}>
-                    <Input
-                      onChange={handleFormChange}
-                      id="exampleSelect"
-                      name="dough"
-                      type="select"
-                    >
-                      <option>Hamur Kalınlığı</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                    </Input>
-                  </Col>
-                </FormGroup>
+                <div>
+                  <label htmlFor="dough">Select</label>
+                  <select id="dough" onChange={handleFormChange} name="dough">
+                    <option>İnce Hamur</option>
+                    <option>Kalın Hamur</option>
+                  </select>
+                </div>
               </div>
             </div>
             <h6>Ek Malzemeler</h6>
