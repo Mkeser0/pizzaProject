@@ -1,14 +1,25 @@
 import { Label, FormGroup, Input } from "reactstrap";
-import { Button, ButtonGroup } from "react-bootstrap";
+
 import Counter from "./Counter";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import styled from "styled-components";
 
 const initialForm = {
   size: "",
   dough: "",
   note: "",
 };
+
+const Button = styled.button`
+  background-color: #ffc107;
+  border: none;
+  color: black;
+  cursor: pointer;
+  font-size: 0.5rem;
+  width: 100%;
+  height: 1.5rem;
+`;
 
 export default function OrderForm() {
   const [ekMalzeme, setEkMalzeme] = useState([]);
@@ -69,7 +80,7 @@ export default function OrderForm() {
           <div>
             <h5>Position Absolute Acı Pizza</h5>
             <div className="price-rating">
-              <b>85.50₺</b>
+              <b style={{ fontSize: ".8rem" }}>85.50₺</b>
               <div className="rating">
                 <p>4.9</p>
                 <p>(200)</p>
@@ -319,7 +330,7 @@ export default function OrderForm() {
             <div className="order">
               <Counter handleQuantityChange={handleQuantityChange} />
               <div className="footer">
-                <div>
+                <div className="total-price">
                   <h6>Sipariş Toplamı</h6>
                   <div className="total">
                     <div>
@@ -331,7 +342,7 @@ export default function OrderForm() {
                       <p>110.00₺</p>
                     </div>
                   </div>
-                  <ButtonGroup>
+                  <div>
                     <Button
                       disabled={!isValid}
                       variant="warning"
@@ -340,7 +351,7 @@ export default function OrderForm() {
                     >
                       SİPARİŞ VER
                     </Button>
-                  </ButtonGroup>
+                  </div>
                 </div>
               </div>
             </div>

@@ -1,5 +1,30 @@
 import React, { useState } from "react";
-import { Button, ButtonGroup, Card } from "react-bootstrap";
+import styled from "styled-components";
+
+const Button = styled.button`
+  background-color: #ffc107;
+  border: none;
+  color: black;
+  cursor: pointer;
+  font-size: 0.5rem;
+  width: 2rem;
+`;
+
+const ButtonDiv = styled.div`
+  background-color: #ffc107;
+  border: 1px solid white;
+  border-radius: 0.2rem;
+`;
+
+const CounterButton = styled.button`
+  background-color: white;
+  border: 1px solid #ccc;
+  color: black;
+  cursor: default;
+  font-size: 0.5rem;
+  width: 2rem;
+  height: 1.5rem;
+`;
 
 const Counter = ({ handleQuantityChange }) => {
   const [count, setCount] = useState(0);
@@ -21,19 +46,13 @@ const Counter = ({ handleQuantityChange }) => {
   };
 
   return (
-    <Card>
-      <ButtonGroup>
-        <Button variant="warning" onClick={decrement}>
-          -
-        </Button>
-        <Button variant="light" disabled>
-          {count}
-        </Button>
-        <Button variant="warning" onClick={increment}>
-          +
-        </Button>
-      </ButtonGroup>
-    </Card>
+    <div>
+      <ButtonDiv>
+        <Button onClick={decrement}>-</Button>
+        <CounterButton disabled>{count}</CounterButton>
+        <Button onClick={increment}>+</Button>
+      </ButtonDiv>
+    </div>
   );
 };
 

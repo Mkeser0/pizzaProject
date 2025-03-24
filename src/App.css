@@ -45,13 +45,14 @@
 .price-rating {
   display: flex; /* Flexbox kullanarak içeriği yatay hizala */
   justify-content: space-between; /* İki elementi ayrı uçlara hizala */
-  align-items: center; /* Dikeyde ortala */
-  width: 100%; /* Container'ın genişliği */
+  align-items: flex-start
+ 
 }
 
 .rating {
   display: flex; 
-  gap: 5px;
+  gap: .5rem;
+ 
 }
 .size-dough {
   display: flex;
@@ -70,10 +71,17 @@
 
 }
 .footer{
-  border: 1px solid black;
+  border: 1px solid #ccc;
+  width: 60%;
+  
+
+}
+.total-price h6 {
+  text-align: center;
+  padding-top: .5rem;
 }
 .total {
- 
+  padding: 1rem 1rem 0.5rem 1rem;
   display: flex;
   justify-content: space-between;
 
@@ -123,7 +131,7 @@ textarea {
 }
 .home-page-content button {
   font-size: .7rem;
-  background-color: yellow;
+  background-color: #ffc107;
   width: 7rem;
   height: 2rem;
   border: none;
@@ -154,4 +162,8 @@ textarea {
   margin-bottom: 10rem;
   font-weight: 100;
   margin-top: 4rem;
+}
+
+@media (max-width: 768px) {
+
 }
