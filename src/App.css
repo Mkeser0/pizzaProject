@@ -13,16 +13,18 @@
   height: 4rem;  
   width: 8rem;  
 }
-
-.header-text {
-  font-family: 'Barlow', sans-serif;
-  font-size: .5rem;
-  font-weight: 400;
-  position: absolute; 
-  bottom: 0.2rem;
-  left:40%; 
-  margin: 0; 
+nav {
+display: flex;
+gap: .5rem;
+margin-right: 12.5rem;
 }
+nav a {
+  text-decoration: none;
+  color: white;
+  font-size: .5rem;
+  
+}
+
 
 .header-text b {
   font-weight: 700; 
@@ -89,6 +91,10 @@
 }
 option {
   font-size: 0.2rem;
+}
+.name {
+  width: 100%;
+  margin-bottom: .5rem;
 }
 textarea {
   width: 100%;
@@ -184,7 +190,7 @@ textarea {
     margin-left: -5rem;
   
     .options {
-      grid-template-columns: repeat(2, 1fr); /* 2 columns on smaller screens */
+      grid-template-columns: repeat(2, 1fr);
     }
   } 
 }

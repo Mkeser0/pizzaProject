@@ -7,11 +7,13 @@ import styled from "styled-components";
 import axios from "axios";
 import EkMalzeme from "./EkMalzeme";
 import { ekMalzemeList } from "./data";
+import { NavLink } from "react-router-dom";
 
 const initialForm = {
   size: "",
   note: "",
   dough: "",
+  adSoyad: "",
 };
 
 const errMessage = {
@@ -19,6 +21,7 @@ const errMessage = {
   dough: "Lütfen hamur seçiniz.",
   ekMalzeme: "En az 3 en fazla 10 ek malzeme seçebilirsiniz.",
   pizzaQuantity: "Lütfen pizza adedi seçiniz.",
+  adSoyad: "Lütfen isminizi giriniz!",
 };
 
 const Button = styled.button`
@@ -42,9 +45,16 @@ export default function OrderForm() {
 
   const history = useHistory();
 
+  const hasEnoughChars = (str) => str.replace(/\s/g, "").length > 3;
   function checkIsValid(x, y, z) {
     return (
-      x.size && x.dough && y.length >= 3 && y.length <= 10 && z > 0 && z <= 10
+      hasEnoughChars(x.adSoyad) &&
+      x.size &&
+      x.dough &&
+      y.length >= 3 &&
+      y.length <= 10 &&
+      z > 0 &&
+      z <= 10
     );
   }
 
@@ -94,9 +104,13 @@ export default function OrderForm() {
       <div>
         <header className="header-card">
           <img src="../images/iteration-1-images/logo.svg" />
-          <p className="header-text">
-            Anasayfa<b> Sipariş Oluştur</b>
-          </p>
+
+          <nav className="header">
+            <NavLink to="/" exact>
+              Anasayfa
+            </NavLink>
+            <NavLink to="/siparis-formu">Sipariş Oluştur</NavLink>
+          </nav>
         </header>
       </div>
       <div className="order-form">
@@ -220,6 +234,22 @@ export default function OrderForm() {
                   {errMessage.ekMalzeme}
                 </div>
               )}
+            <h6 style={{ fontSize: ".8rem" }}>Ad Soyad</h6>
+            <input
+              id="adSoyad"
+              name="adSoyad"
+              className="name"
+              type="text"
+              placeholder="Lütfen isminizi giriniz!"
+              onChange={handleFormChange}
+              value={form.adSoyad}
+            />
+            {isSubmitted && !isValid && !hasEnoughChars(form.adSoyad) && (
+              <div style={{ color: "red", fontSize: ".4rem" }}>
+                {errMessage.adSoyad}
+              </div>
+            )}
+
             <h6 style={{ fontSize: ".8rem" }}>Sipariş Notu</h6>
             <textarea
               name="note"

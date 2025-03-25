@@ -30,4 +30,11 @@ export default [
       ],
     },
   },
+  {
+    "env": {
+      "cypress/globals": true
+    },
+    "plugins": ["cypress"]
+  }
+  
 ]
