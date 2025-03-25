@@ -1,19 +1,30 @@
-import { Label, FormGroup, Input } from "reactstrap";
-
+import { Label, FormGroup, Input, FormFeedback } from "reactstrap";
+import React from "react";
 import Counter from "./Counter";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
+import EkMalzeme from "./EkMalzeme";
+import { ekMalzemeList } from "./data";
 
 const initialForm = {
   size: "",
-  dough: "",
   note: "",
+  dough: "",
+};
+
+const errMessage = {
+  size: "Lütfen boyut seçiniz.",
+  dough: "Lütfen hamur seçiniz.",
+  ekMalzeme: "En az 3 en fazla 10 ek malzeme seçebilirsiniz.",
+  pizzaQuantity: "Lütfen pizza adedi seçiniz.",
 };
 
 const Button = styled.button`
   background-color: #ffc107;
   border: none;
+  border-radius: 3px;
   color: black;
   cursor: pointer;
   font-size: 0.5rem;
@@ -22,10 +33,12 @@ const Button = styled.button`
 `;
 
 export default function OrderForm() {
-  const [ekMalzeme, setEkMalzeme] = useState([]);
+  const [selectedMalzeme, setSelectedMalzeme] = useState([]);
   const [form, setForm] = useState(initialForm);
   const [pizzaQuantity, setPizzaQuantity] = useState(0);
   const [isValid, setIsValid] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [malzeme, setMalzeme] = useState(ekMalzemeList);
 
   const history = useHistory();
 
@@ -36,15 +49,15 @@ export default function OrderForm() {
   }
 
   useEffect(() => {
-    setIsValid(checkIsValid(form, ekMalzeme, pizzaQuantity));
-  }, [form, ekMalzeme, pizzaQuantity]);
+    setIsValid(checkIsValid(form, selectedMalzeme, pizzaQuantity));
+  }, [form, selectedMalzeme, pizzaQuantity]);
 
   function handleChange(e) {
     const { value, checked } = e.target;
     if (checked) {
-      setEkMalzeme((prev) => [...prev, value]);
+      setSelectedMalzeme((prev) => [...prev, value]);
     } else {
-      setEkMalzeme((prev) => prev.filter((item) => item !== value));
+      setSelectedMalzeme((prev) => prev.filter((item) => item !== value));
     }
   }
 
@@ -57,12 +70,23 @@ export default function OrderForm() {
     setPizzaQuantity(quantity);
   }
 
-  function handleClick() {
+  function handleSubmit(e) {
+    e.preventDefault();
+    setIsSubmitted(true);
     if (isValid) {
       history.push("/order-confirmation");
     } else {
-      alert("Lütfen tüm alanları doğru şekilde doldurun.");
+      console.log("Form is invalid");
     }
+
+    axios.post("https://jsonplaceholder.typicode.com/posts", form).then(
+      (response) => {
+        console.log(response.data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   return (
@@ -78,7 +102,7 @@ export default function OrderForm() {
       <div className="order-form">
         <div className="siparis-card">
           <div>
-            <h5>Position Absolute Acı Pizza</h5>
+            <h6 style={{ fontSize: ".8rem" }}>Position Absolute Acı Pizza</h6>
             <div className="price-rating">
               <b style={{ fontSize: ".8rem" }}>85.50₺</b>
               <div className="rating">
@@ -96,13 +120,18 @@ export default function OrderForm() {
             </p>
             <div className="size-dough">
               <div>
-                <h6>Boyut Seç</h6>
+                <h6 style={{ fontSize: ".8rem" }}>
+                  Boyut Seç
+                  <sup style={{ color: "red", fontSize: ".6rem" }}>*</sup>
+                </h6>
                 <FormGroup check>
                   <Input
                     onChange={handleFormChange}
                     id="buyuk"
                     name="size"
                     type="radio"
+                    value="Büyük"
+                    invalid={!form.size}
                   />
                   <Label htmlFor="buyuk" check>
                     Büyük
@@ -114,6 +143,8 @@ export default function OrderForm() {
                     id="orta"
                     name="size"
                     type="radio"
+                    value="Orta"
+                    invalid={!form.size}
                   />
                   <Label htmlFor="orta" check>
                     Orta
@@ -125,202 +156,71 @@ export default function OrderForm() {
                     id="kucuk"
                     name="size"
                     type="radio"
+                    value="kucuk"
+                    invalid={!form.size}
                   />
                   <Label htmlFor="kucuk" check>
                     Küçük
                   </Label>
+                  {isSubmitted && !isValid && !form.size && (
+                    <div style={{ color: "red", fontSize: ".4rem" }}>
+                      {errMessage.size}
+                    </div>
+                  )}
                 </FormGroup>
               </div>
               <div>
-                <h6>Hamur Seç</h6>
+                <h6 style={{ fontSize: ".8rem" }}>
+                  Hamur Seç
+                  <sup style={{ color: "red", fontSize: ".6rem" }}>*</sup>
+                </h6>
                 <div>
-                  <label htmlFor="dough">Select</label>
-                  <select id="dough" onChange={handleFormChange} name="dough">
-                    <option>İnce Hamur</option>
-                    <option>Kalın Hamur</option>
+                  <label
+                    htmlFor="dough"
+                    style={{ marginRight: "5px", display: "inline" }}
+                  >
+                    Select
+                  </label>
+                  <select
+                    id="dough"
+                    onChange={handleFormChange}
+                    name="dough"
+                    value={form.dough}
+                    invalid={!form.dough}
+                  >
+                    <option value="" disabled selected>
+                      Hamur Kalınlığı
+                    </option>
+                    <option value="İnce Hamur">İnce Hamur</option>
+                    <option value="Kalın Hamur">Kalın Hamur</option>
                   </select>
+                  {isSubmitted && !isValid && !form.dough && (
+                    <div style={{ color: "red", fontSize: ".4rem" }}>
+                      {errMessage.dough}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-            <h6>Ek Malzemeler</h6>
+            <h6 style={{ fontSize: ".8rem" }}>Ek Malzemeler</h6>
             <p>En fazla 10 malzeme seçebilirsiniz. 5₺</p>
             <div className="options">
-              <div className="first-col">
-                <FormGroup check>
-                  <Input
-                    value="pepp"
-                    name="pepp"
-                    id="pepp"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="pepp" check>
-                    Peppperoni
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Input
-                    value="ızg"
-                    name="ızg"
-                    id="ızg"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="ızg" check>
-                    Tavuk Izgara
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Input
-                    value="misir"
-                    name="misir"
-                    id="misir"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="misir" check>
-                    Mısır
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Input
-                    value="sarim"
-                    name="sarim"
-                    id="sarim"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="sarim" check>
-                    Sarımsak
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Input
-                    value="ananas"
-                    name="ananas"
-                    id="ananas"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="ananas" check>
-                    Ananas
-                  </Label>
-                </FormGroup>
-              </div>
-              <div className="second-col">
-                <FormGroup check>
-                  <Input
-                    value="sosis"
-                    name="sosis"
-                    id="sosis"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="sosis" check>
-                    Sosis
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Input
-                    value="sogan"
-                    name="sogan"
-                    id="sogan"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="sogan" check>
-                    Soğan
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Input
-                    value="sucuk"
-                    name="sucuk"
-                    id="sucuk"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="sucuk" check>
-                    Sucuk
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Input
-                    value="biber"
-                    name="biber"
-                    id="biber"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="biber" check>
-                    Biber
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Input
-                    value="kabak"
-                    name="kabak"
-                    id="kabak"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="kabak" check>
-                    Kabak
-                  </Label>
-                </FormGroup>
-              </div>
-              <div className="third-col">
-                <FormGroup check>
-                  <Input
-                    value="jambon"
-                    name="jambon"
-                    id="jambon"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="jambon" check>
-                    Kanada Jambonu
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Input
-                    value="dom"
-                    name="dom"
-                    id="dom"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="dom" check>
-                    Domates
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Input
-                    value="jal"
-                    name="jal"
-                    id="jal"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="jal" check>
-                    Jalepeno
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Input
-                    value="suc"
-                    name="suc"
-                    id="suc"
-                    type="checkbox"
-                    onChange={handleChange}
-                  />
-                  <Label htmlFor="suc" check>
-                    Sucuk
-                  </Label>
-                </FormGroup>
-              </div>
+              {malzeme.map((item) => (
+                <EkMalzeme
+                  key={item}
+                  items={item}
+                  handleChange={handleChange}
+                />
+              ))}
             </div>
-            <h6>Sipariş Notu</h6>
+            {isSubmitted &&
+              !isValid &&
+              (selectedMalzeme.length < 3 || selectedMalzeme.length > 10) && (
+                <div style={{ color: "red", fontSize: ".4rem" }}>
+                  {errMessage.ekMalzeme}
+                </div>
+              )}
+            <h6 style={{ fontSize: ".8rem" }}>Sipariş Notu</h6>
             <textarea
               name="note"
               onChange={handleFormChange}
@@ -328,29 +228,35 @@ export default function OrderForm() {
             ></textarea>
             <hr></hr>
             <div className="order">
-              <Counter handleQuantityChange={handleQuantityChange} />
+              <FormGroup>
+                <Counter handleQuantityChange={handleQuantityChange} />
+                {isSubmitted &&
+                  !isValid &&
+                  (pizzaQuantity <= 0 || pizzaQuantity > 10) && (
+                    <div style={{ color: "red", fontSize: ".4rem" }}>
+                      {errMessage.pizzaQuantity}
+                    </div>
+                  )}
+              </FormGroup>
               <div className="footer">
                 <div className="total-price">
-                  <h6>Sipariş Toplamı</h6>
-                  <div className="total">
-                    <div>
-                      <p>Seçimler</p>
-                      <p>Toplam</p>
-                    </div>
-                    <div>
-                      <p>25.00₺</p>
-                      <p>110.00₺</p>
+                  <div className="total-price-card">
+                    <h6 style={{ fontSize: ".8rem" }}>Sipariş Toplamı</h6>
+                    <div className="total">
+                      <div>
+                        <p>Seçimler</p>
+                        <p style={{ color: "red" }}>Toplam</p>
+                      </div>
+                      <div>
+                        <p>25.00₺</p>
+                        <p style={{ color: "red" }}>110.00₺</p>
+                      </div>
                     </div>
                   </div>
                   <div>
-                    <Button
-                      disabled={!isValid}
-                      variant="warning"
-                      onClick={handleClick}
-                      type="submit"
-                    >
-                      SİPARİŞ VER
-                    </Button>
+                    <form action="" onSubmit={handleSubmit}>
+                      <Button type="submit">SİPARİŞ VER</Button>
+                    </form>
                   </div>
                 </div>
               </div>

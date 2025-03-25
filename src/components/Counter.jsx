@@ -14,6 +14,9 @@ const ButtonDiv = styled.div`
   background-color: #ffc107;
   border: 1px solid white;
   border-radius: 0.2rem;
+
+  @media (max-width: 768px) {
+    margin-top: 8rem;
 `;
 
 const CounterButton = styled.button`
@@ -48,9 +51,13 @@ const Counter = ({ handleQuantityChange }) => {
   return (
     <div>
       <ButtonDiv>
-        <Button onClick={decrement}>-</Button>
+        <Button type="click" onClick={decrement}>
+          -
+        </Button>
         <CounterButton disabled>{count}</CounterButton>
-        <Button onClick={increment}>+</Button>
+        <Button type="click" onClick={increment}>
+          +
+        </Button>
       </ButtonDiv>
     </div>
   );
