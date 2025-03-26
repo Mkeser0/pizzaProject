@@ -1,4 +1,4 @@
-import { Label, FormGroup, Input, FormFeedback } from "reactstrap";
+import { Label, FormGroup, Input } from "reactstrap";
 import React from "react";
 import Counter from "./Counter";
 import { useState, useEffect } from "react";
@@ -8,6 +8,7 @@ import axios from "axios";
 import EkMalzeme from "./EkMalzeme";
 import { ekMalzemeList } from "./data";
 import { NavLink } from "react-router-dom";
+import Footer from "./footer";
 
 const initialForm = {
   size: "",
@@ -89,7 +90,7 @@ export default function OrderForm() {
       console.log("Form is invalid");
     }
 
-    axios.post("https://jsonplaceholder.typicode.com/posts", form).then(
+    axios.post("https://reqres.in/api/pizza", form).then(
       (response) => {
         console.log(response.data);
       },
@@ -104,18 +105,21 @@ export default function OrderForm() {
       <div>
         <header className="header-card">
           <img src="../images/iteration-1-images/logo.svg" />
-
-          <nav className="header">
-            <NavLink to="/" exact>
-              Anasayfa
-            </NavLink>
-            <NavLink to="/siparis-formu">Sipariş Oluştur</NavLink>
-          </nav>
         </header>
       </div>
       <div className="order-form">
-        <div className="siparis-card">
-          <div>
+        <div className="back-bej">
+          <img
+            src="../images/iteration-2-images/pictures/form-banner.png"
+            alt=""
+          />
+          <div className="first-part-main">
+            <nav className="header">
+              <NavLink to="/" exact>
+                Anasayfa
+              </NavLink>
+              <NavLink to="/siparis-formu">Sipariş Oluştur</NavLink>
+            </nav>
             <h6 style={{ fontSize: ".8rem" }}>Position Absolute Acı Pizza</h6>
             <div className="price-rating">
               <b style={{ fontSize: ".8rem" }}>85.50₺</b>
@@ -132,168 +136,168 @@ export default function OrderForm() {
               düzleştirilmiş mayalı buğday bazlı hamurdan oluşan İtalyan kökenli
               lezzetli bir yemektir. Küçük bir pizzaya bazen pizzette denir.
             </p>
-            <div className="size-dough">
-              <div>
-                <h6 style={{ fontSize: ".8rem" }}>
-                  Boyut Seç
-                  <sup style={{ color: "red", fontSize: ".6rem" }}>*</sup>
-                </h6>
-                <FormGroup check>
-                  <Input
-                    onChange={handleFormChange}
-                    id="buyuk"
-                    name="size"
-                    type="radio"
-                    value="Büyük"
-                    invalid={!form.size}
-                  />
-                  <Label htmlFor="buyuk" check>
-                    Büyük
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Input
-                    onChange={handleFormChange}
-                    id="orta"
-                    name="size"
-                    type="radio"
-                    value="Orta"
-                    invalid={!form.size}
-                  />
-                  <Label htmlFor="orta" check>
-                    Orta
-                  </Label>
-                </FormGroup>
-                <FormGroup check>
-                  <Input
-                    onChange={handleFormChange}
-                    id="kucuk"
-                    name="size"
-                    type="radio"
-                    value="kucuk"
-                    invalid={!form.size}
-                  />
-                  <Label htmlFor="kucuk" check>
-                    Küçük
-                  </Label>
-                  {isSubmitted && !isValid && !form.size && (
-                    <div style={{ color: "red", fontSize: ".4rem" }}>
-                      {errMessage.size}
-                    </div>
-                  )}
-                </FormGroup>
-              </div>
-              <div>
-                <h6 style={{ fontSize: ".8rem" }}>
-                  Hamur Seç
-                  <sup style={{ color: "red", fontSize: ".6rem" }}>*</sup>
-                </h6>
-                <div>
-                  <label
-                    htmlFor="dough"
-                    style={{ marginRight: "5px", display: "inline" }}
-                  >
-                    Select
-                  </label>
-                  <select
-                    id="dough"
-                    onChange={handleFormChange}
-                    name="dough"
-                    value={form.dough}
-                    invalid={!form.dough}
-                  >
-                    <option value="" disabled selected>
-                      Hamur Kalınlığı
-                    </option>
-                    <option value="İnce Hamur">İnce Hamur</option>
-                    <option value="Kalın Hamur">Kalın Hamur</option>
-                  </select>
-                  {isSubmitted && !isValid && !form.dough && (
-                    <div style={{ color: "red", fontSize: ".4rem" }}>
-                      {errMessage.dough}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <h6 style={{ fontSize: ".8rem" }}>Ek Malzemeler</h6>
-            <p>En fazla 10 malzeme seçebilirsiniz. 5₺</p>
-            <div className="options">
-              {malzeme.map((item) => (
-                <EkMalzeme
-                  key={item}
-                  items={item}
-                  handleChange={handleChange}
+          </div>
+        </div>
+        <div className="second-part-main">
+          <div className="size-dough">
+            <div>
+              <h6 style={{ fontSize: ".8rem" }}>
+                Boyut Seç
+                <sup style={{ color: "red", fontSize: ".6rem" }}>*</sup>
+              </h6>
+              <FormGroup check>
+                <Input
+                  onChange={handleFormChange}
+                  id="buyuk"
+                  name="size"
+                  type="radio"
+                  value="Büyük"
+                  invalid={!form.size}
                 />
-              ))}
+                <Label htmlFor="buyuk" check>
+                  S
+                </Label>
+              </FormGroup>
+              <FormGroup check>
+                <Input
+                  onChange={handleFormChange}
+                  id="orta"
+                  name="size"
+                  type="radio"
+                  value="Orta"
+                  invalid={!form.size}
+                />
+                <Label htmlFor="orta" check>
+                  M
+                </Label>
+              </FormGroup>
+              <FormGroup check>
+                <Input
+                  onChange={handleFormChange}
+                  id="kucuk"
+                  name="size"
+                  type="radio"
+                  value="kucuk"
+                  invalid={!form.size}
+                />
+                <Label htmlFor="kucuk" check>
+                  L
+                </Label>
+                {isSubmitted && !isValid && !form.size && (
+                  <div style={{ color: "red", fontSize: ".4rem" }}>
+                    {errMessage.size}
+                  </div>
+                )}
+              </FormGroup>
             </div>
-            {isSubmitted &&
-              !isValid &&
-              (selectedMalzeme.length < 3 || selectedMalzeme.length > 10) && (
-                <div style={{ color: "red", fontSize: ".4rem" }}>
-                  {errMessage.ekMalzeme}
-                </div>
-              )}
-            <h6 style={{ fontSize: ".8rem" }}>Ad Soyad</h6>
-            <input
-              id="adSoyad"
-              name="adSoyad"
-              className="name"
-              type="text"
-              placeholder="Lütfen isminizi giriniz!"
-              onChange={handleFormChange}
-              value={form.adSoyad}
-            />
-            {isSubmitted && !isValid && !hasEnoughChars(form.adSoyad) && (
+            <div>
+              <h6 style={{ fontSize: ".8rem" }}>
+                Hamur Seç
+                <sup style={{ color: "red", fontSize: ".6rem" }}>*</sup>
+              </h6>
+              <div>
+                <label
+                  htmlFor="dough"
+                  style={{ marginRight: "5px", display: "inline" }}
+                >
+                  Select
+                </label>
+                <select
+                  id="dough"
+                  onChange={handleFormChange}
+                  name="dough"
+                  value={form.dough}
+                  invalid={!form.dough}
+                >
+                  <option value="" disabled selected>
+                    Hamur Kalınlığı
+                  </option>
+                  <option value="Süper İnce">Süper İnce</option>
+                  <option value="İnce">İnce</option>
+                  <option value="Kalın">Kalın</option>
+                </select>
+                {isSubmitted && !isValid && !form.dough && (
+                  <div style={{ color: "red", fontSize: ".4rem" }}>
+                    {errMessage.dough}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <h6 style={{ fontSize: ".8rem" }}>Ek Malzemeler</h6>
+          <p>En fazla 10 malzeme seçebilirsiniz. 5₺</p>
+          <div className="options">
+            {malzeme.map((item) => (
+              <EkMalzeme key={item} items={item} handleChange={handleChange} />
+            ))}
+          </div>
+          {isSubmitted &&
+            !isValid &&
+            (selectedMalzeme.length < 3 || selectedMalzeme.length > 10) && (
               <div style={{ color: "red", fontSize: ".4rem" }}>
-                {errMessage.adSoyad}
+                {errMessage.ekMalzeme}
               </div>
             )}
+          <h6 style={{ fontSize: ".8rem" }}>Ad Soyad</h6>
+          <input
+            id="adSoyad"
+            name="adSoyad"
+            className="name"
+            type="text"
+            placeholder="Lütfen isminizi giriniz!"
+            onChange={handleFormChange}
+            value={form.adSoyad}
+          />
+          {isSubmitted && !isValid && !hasEnoughChars(form.adSoyad) && (
+            <div style={{ color: "red", fontSize: ".4rem" }}>
+              {errMessage.adSoyad}
+            </div>
+          )}
 
-            <h6 style={{ fontSize: ".8rem" }}>Sipariş Notu</h6>
-            <textarea
-              name="note"
-              onChange={handleFormChange}
-              placeholder="Siparişinize eklemek istediğiniz bir not var mı?"
-            ></textarea>
-            <hr></hr>
-            <div className="order">
-              <FormGroup>
-                <Counter handleQuantityChange={handleQuantityChange} />
-                {isSubmitted &&
-                  !isValid &&
-                  (pizzaQuantity <= 0 || pizzaQuantity > 10) && (
-                    <div style={{ color: "red", fontSize: ".4rem" }}>
-                      {errMessage.pizzaQuantity}
+          <h6 style={{ fontSize: ".8rem" }}>Sipariş Notu</h6>
+          <textarea
+            name="note"
+            onChange={handleFormChange}
+            placeholder="Siparişinize eklemek istediğiniz bir not var mı?"
+          ></textarea>
+          <hr></hr>
+          <div className="order">
+            <FormGroup>
+              <Counter handleQuantityChange={handleQuantityChange} />
+              {isSubmitted &&
+                !isValid &&
+                (pizzaQuantity <= 0 || pizzaQuantity > 10) && (
+                  <div style={{ color: "red", fontSize: ".4rem" }}>
+                    {errMessage.pizzaQuantity}
+                  </div>
+                )}
+            </FormGroup>
+            <div className="footer">
+              <div className="total-price">
+                <div className="total-price-card">
+                  <h6 style={{ fontSize: ".8rem" }}>Sipariş Toplamı</h6>
+                  <div className="total">
+                    <div>
+                      <p>Seçimler</p>
+                      <p style={{ color: "red" }}>Toplam</p>
                     </div>
-                  )}
-              </FormGroup>
-              <div className="footer">
-                <div className="total-price">
-                  <div className="total-price-card">
-                    <h6 style={{ fontSize: ".8rem" }}>Sipariş Toplamı</h6>
-                    <div className="total">
-                      <div>
-                        <p>Seçimler</p>
-                        <p style={{ color: "red" }}>Toplam</p>
-                      </div>
-                      <div>
-                        <p>25.00₺</p>
-                        <p style={{ color: "red" }}>110.00₺</p>
-                      </div>
+                    <div>
+                      <p>25.00₺</p>
+                      <p style={{ color: "red" }}>110.00₺</p>
                     </div>
                   </div>
-                  <div>
-                    <form action="" onSubmit={handleSubmit}>
-                      <Button type="submit">SİPARİŞ VER</Button>
-                    </form>
-                  </div>
+                </div>
+                <div>
+                  <form onSubmit={handleSubmit}>
+                    <Button type="submit">SİPARİŞ VER</Button>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
