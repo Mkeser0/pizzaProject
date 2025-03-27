@@ -8,6 +8,7 @@ const PizzaDiv = styled.div`
   border: 2px solid transparent;
   border-radius: 5px;
   margin-bottom: 2rem;
+  text-align: center;
 `;
 
 const P = styled.p`

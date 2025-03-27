@@ -9,7 +9,9 @@ export default function OrderConfirmation({
         <div className="confirmation-page-content">
           <img src="../images/iteration-1-images/logo.svg" />
           <div className="baslik">
-            <p>Lezzetin Yolda!</p>
+            <p style={{ fontFamily: "Satisfy", color: "yellow" }}>
+              Lezzetin Yolda!
+            </p>
             <h1>SİPARİŞ ALINDI!</h1>
             <hr />
             <div
@@ -21,7 +23,7 @@ export default function OrderConfirmation({
                 marginLeft: "6rem",
               }}
             >
-              <h6>{form.name}</h6>
+              <h6>{form.name || "Position Absolute Acı Pizza"}</h6>
               <p style={{ marginTop: "3rem" }}>
                 <b>Alıcı: </b>
                 {form.adSoyad}

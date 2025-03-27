@@ -35,7 +35,6 @@ export default function OrderForm(props) {
     selectedMalzeme,
     setSelectedMalzeme,
     form,
-    setForm,
     totalPrice,
     setTotalPrice,
     handleFormChange,

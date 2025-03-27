@@ -4,7 +4,6 @@ import styled from "styled-components";
 const MainDiv = styled.div`
   background-color: black;
   width: 100%;
-  text-align: center;
   padding-top: 3rem;
 `;
 const WrapperDiv = styled.div`
@@ -37,7 +36,7 @@ const FooterFirstCol = styled.div`
 `;
 
 const FooterLogo = styled.img`
-  max-width: 3rem;
+  max-width: 12rem;
   height: auto;
   margin-bottom: 1rem;
 `;
@@ -51,12 +50,12 @@ const ConnectDiv = styled.div`
   gap: 5px;
 `;
 const P = styled.p`
-  font-size: 0.5rem;
+  font-size: 0.8rem;
   color: white;
 `;
 
 const Fimages = styled.img`
-  max-width: 5rem;
+  max-width: 5.5rem;
   margin: 0;
 `;
 const ImgDiv = styled.div`
@@ -71,14 +70,7 @@ function Footer() {
   return (
     <MainDiv>
       <WrapperDiv>
-        <Divv
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: "1.5rem",
-          }}
-        >
+        <Divv>
           <FooterFirstCol className="footer-first-col">
             <FooterLogo src="../images/iteration-2-images/footer/logo-footer.svg" />
             <ConnectDiv>
@@ -95,13 +87,17 @@ function Footer() {
             </ConnectDiv>
           </FooterFirstCol>
           <div className="footer-second-col">
-            <h6 style={{ color: "white", fontSize: ".6rem" }}>Hot Menü</h6>
+            <h4 style={{ color: "white" }}>Hot Menü</h4>
             <P>Terminal Pizza</P>
             <P>5 Kişilik Hechatlon Pizza</P>
+            <P>useEffect tavuklu Pizza</P>
+            <P>Beyaz Console Frosty</P>
+            <P>Testler Geçti Mutlu Burger</P>
+            <P>Position Absolute Acı Burger</P>
           </div>
         </Divv>
         <div className="footer-third-col">
-          <h6 style={{ color: "white", fontSize: ".6rem" }}>Instagram</h6>
+          <h4 style={{ color: "white" }}>Instagram</h4>
           <ImgDiv>
             <Fimages src="../images/iteration-2-images/footer/insta/li-0.png" />
             <Fimages src="../images/iteration-2-images/footer/insta/li-1.png" />
@@ -112,7 +108,18 @@ function Footer() {
           </ImgDiv>
         </div>
       </WrapperDiv>
-      <div>q@@@@@@</div>
+      <hr style={{ color: "gray" }} />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          padding: ".5rem",
+        }}
+      >
+        <P>© 2023 Teknolojik Yemekler</P>
+        <i class="fa-brands fa-twitter" style={{ color: "#FFFFFF" }}></i>
+      </div>
     </MainDiv>
   );
 }
