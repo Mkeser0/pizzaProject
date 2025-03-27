@@ -15,6 +15,20 @@ const WrapperDiv = styled.div`
   padding: 0 5%;
   max-width: 90%;
   margin: 0 20%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+const Divv = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 const FooterFirstCol = styled.div`
   display: flex;
@@ -42,7 +56,7 @@ const P = styled.p`
 `;
 
 const Fimages = styled.img`
-  max-width: 2.5rem;
+  max-width: 5rem;
   margin: 0;
 `;
 const ImgDiv = styled.div`
@@ -57,7 +71,7 @@ function Footer() {
   return (
     <MainDiv>
       <WrapperDiv>
-        <div
+        <Divv
           style={{
             display: "flex",
             flexDirection: "row",
@@ -85,7 +99,7 @@ function Footer() {
             <P>Terminal Pizza</P>
             <P>5 Kişilik Hechatlon Pizza</P>
           </div>
-        </div>
+        </Divv>
         <div className="footer-third-col">
           <h6 style={{ color: "white", fontSize: ".6rem" }}>Instagram</h6>
           <ImgDiv>

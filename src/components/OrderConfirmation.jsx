@@ -1,4 +1,8 @@
-export default function OrderConfirmation() {
+export default function OrderConfirmation({
+  selectedMalzeme,
+  form,
+  totalPrice,
+}) {
   return (
     <>
       <div className="confirmation-page">
@@ -17,15 +21,19 @@ export default function OrderConfirmation() {
                 marginLeft: "6rem",
               }}
             >
-              <h6>Position Absolute Acı Pizza</h6>
+              <h6>{form.name}</h6>
               <p style={{ marginTop: "3rem" }}>
-                <b>Boyut:</b> M
+                <b>Alıcı: </b>
+                {form.adSoyad}
               </p>
               <p>
-                <b>Hamur:</b> Süper İnce
+                <b>Boyut:</b> {form.size}
               </p>
               <p>
-                <b>Ek Malzeme:</b> Sucuk, Jambon, Sarımsak
+                <b>Hamur:</b> {form.dough}
+              </p>
+              <p>
+                <b>Ek Malzeme: </b> {selectedMalzeme.join(", ")}
               </p>
               <div
                 style={{
@@ -44,7 +52,7 @@ export default function OrderConfirmation() {
                   </div>
                   <div>
                     <p>25.00₺</p>
-                    <p>110.00₺</p>
+                    <p>{totalPrice}₺</p>
                   </div>
                 </div>
               </div>

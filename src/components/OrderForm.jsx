@@ -2,20 +2,14 @@ import { Label, FormGroup, Input } from "reactstrap";
 import React from "react";
 import Counter from "./Counter";
 import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import EkMalzeme from "./EkMalzeme";
 import { ekMalzemeList } from "./data";
 import { NavLink } from "react-router-dom";
 import Footer from "./footer";
-
-const initialForm = {
-  size: "",
-  note: "",
-  dough: "",
-  adSoyad: "",
-};
+import { pizzaCard } from "./data";
 
 const errMessage = {
   size: "Lütfen boyut seçiniz.",
@@ -36,15 +30,26 @@ const Button = styled.button`
   height: 1.5rem;
 `;
 
-export default function OrderForm() {
-  const [selectedMalzeme, setSelectedMalzeme] = useState([]);
-  const [form, setForm] = useState(initialForm);
-  const [pizzaQuantity, setPizzaQuantity] = useState(0);
+export default function OrderForm(props) {
+  const {
+    selectedMalzeme,
+    setSelectedMalzeme,
+    form,
+    setForm,
+    totalPrice,
+    setTotalPrice,
+    handleFormChange,
+  } = props;
+
+  const [pizzaQuantity, setPizzaQuantity] = useState(1);
   const [isValid, setIsValid] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [malzeme, setMalzeme] = useState(ekMalzemeList);
 
+  const [pizzaList, setPizzaList] = useState(pizzaCard);
+
   const history = useHistory();
+  const location = useLocation();
 
   const hasEnoughChars = (str) => str.replace(/\s/g, "").length > 3;
   function checkIsValid(x, y, z) {
@@ -72,10 +77,25 @@ export default function OrderForm() {
     }
   }
 
-  function handleFormChange(e) {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  }
+  const pizzaName = location.state?.pizzaName || "Position Absolute Acı Pizza";
+  const selectedPizza =
+    pizzaList.find((pizza) => pizza.name === pizzaName) || pizzaList[0];
+  const basePrice = selectedPizza.price;
+  const ratingPizza = selectedPizza.rating;
+  const freeMalzeme = 3;
+  const extraUcret = 25;
+
+  useEffect(() => {
+    const ingredientCount = selectedMalzeme.length;
+    let extraCost = 0;
+
+    if (ingredientCount > freeMalzeme) {
+      extraCost = (ingredientCount - freeMalzeme) * extraUcret;
+    }
+
+    const pizzaCost = basePrice * (pizzaQuantity || 1);
+    setTotalPrice(pizzaCost + extraCost);
+  }, [selectedMalzeme, pizzaQuantity, basePrice]);
 
   function handleQuantityChange(quantity) {
     setPizzaQuantity(quantity);
@@ -85,19 +105,23 @@ export default function OrderForm() {
     e.preventDefault();
     setIsSubmitted(true);
     if (isValid) {
-      history.push("/order-confirmation");
+      axios
+        .post("https://reqres.in/api/pizza", {
+          ...form,
+          selectedMalzeme,
+          pizzaQuantity,
+          totalPrice,
+        })
+        .then((response) => {
+          console.log(response.data);
+          history.push("/order-confirmation");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       console.log("Form is invalid");
     }
-
-    axios.post("https://reqres.in/api/pizza", form).then(
-      (response) => {
-        console.log(response.data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
   }
 
   return (
@@ -120,11 +144,11 @@ export default function OrderForm() {
               </NavLink>
               <NavLink to="/siparis-formu">Sipariş Oluştur</NavLink>
             </nav>
-            <h6 style={{ fontSize: ".8rem" }}>Position Absolute Acı Pizza</h6>
+            <h6 style={{ fontSize: ".8rem" }}>{pizzaName}</h6>
             <div className="price-rating">
-              <b style={{ fontSize: ".8rem" }}>85.50₺</b>
+              <b style={{ fontSize: ".8rem" }}>{basePrice}₺</b>
               <div className="rating">
-                <p>4.9</p>
+                <p>{ratingPizza}</p>
                 <p>(200)</p>
               </div>
             </div>
@@ -155,7 +179,7 @@ export default function OrderForm() {
                   invalid={!form.size}
                 />
                 <Label htmlFor="buyuk" check>
-                  S
+                  L
                 </Label>
               </FormGroup>
               <FormGroup check>
@@ -177,11 +201,11 @@ export default function OrderForm() {
                   id="kucuk"
                   name="size"
                   type="radio"
-                  value="kucuk"
+                  value="Küçük"
                   invalid={!form.size}
                 />
                 <Label htmlFor="kucuk" check>
-                  L
+                  S
                 </Label>
                 {isSubmitted && !isValid && !form.size && (
                   <div style={{ color: "red", fontSize: ".4rem" }}>
@@ -282,8 +306,13 @@ export default function OrderForm() {
                       <p style={{ color: "red" }}>Toplam</p>
                     </div>
                     <div>
-                      <p>25.00₺</p>
-                      <p style={{ color: "red" }}>110.00₺</p>
+                      <p>
+                        {selectedMalzeme.length > freeMalzeme
+                          ? (selectedMalzeme.length - freeMalzeme) * extraUcret
+                          : 0}
+                        ₺
+                      </p>
+                      <p style={{ color: "red" }}>{totalPrice}₺</p>
                     </div>
                   </div>
                 </div>

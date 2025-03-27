@@ -36,12 +36,13 @@ nav a {
   justify-content: center;
   align-items: center;
   height: 100%;
-  margin-top: 0; /* Üst boşluğu kaldır */
+  margin-top: 0;
+
 }
 
 .back-bej {
   background-color: #FAF7F2;
-  width: 100vw; /* Tam genişlik */
+  width: 100vw; 
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -52,7 +53,7 @@ nav a {
   width: 19rem;
   font-size: 0.5rem;
   margin-bottom: 1.2rem;
-  max-width: 90%; /* İçeriği sınırlı tutmak için */
+  max-width: 90%; 
 }
 .second-part-main {
   width: 19rem;
